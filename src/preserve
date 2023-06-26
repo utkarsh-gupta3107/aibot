@@ -1,0 +1,304 @@
+import React, { useState ,useEffect } from "react";
+import { Configuration, OpenAIApi } from "openai";
+import {useSpeechSynthesis} from 'react-speech-kit';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+
+function App() {
+ const [Medium, setMedium] = useState('');
+ const { speak } = useSpeechSynthesis();
+
+const {
+      transcript,
+      listening,import React, { useState ,useEffect } from "react";
+      import { Configuration, OpenAIApi } from "openai";
+      import {useSpeechSynthesis} from 'react-speech-kit';
+      import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+      
+      function App() {
+       const [Medium, setMedium] = useState('');
+       const [OnOff, setOnOff] = useState('');
+       const { speak } = useSpeechSynthesis();
+       const [listening, setListening] = useState(false);
+       const {
+         transcript,
+        //  resetTranscript,
+         browserSupportsSpeechRecognition
+       } = useSpeechRecognition();
+      
+       const startRecognition = () => {
+        speechSynthesis.cancel();
+      
+         if (browserSupportsSpeechRecognition) {
+           SpeechRecognition.startListening();
+           setListening(true);
+           setOnOff('On');
+         } else {
+           console.log('Speech recognition is not supported in this browser.');
+      
+         }
+      
+       };
+      
+       const stopRecognition = () => {
+         SpeechRecognition.stopListening();
+         setListening(false);
+         setOnOff("off");
+      
+       };
+      
+       const resetTranscript = () => {
+        setOnOff("Off");
+        SpeechRecognition.abortListening();
+        SpeechRecognition.startListening();
+      };
+       
+       const RunPrompt = async (InputReq) => {
+        setOnOff("Off");
+        const config = new Configuration({
+          apiKey: "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",
+        });
+        const openai = new OpenAIApi(config);
+      const prompt = `${InputReq} ? Return response in the following JSON format:
+      {
+      "Q": "question",
+      "A": "answer"
+      }`;
+      
+      
+        const response = await openai.createCompletion({
+          model: "text-davinci-003",
+          prompt: prompt,
+          max_tokens: 2048,
+          temperature: 1,
+        });
+      
+         const parsableJsonResponse=response.data.choices[0].text;
+        // const filteredResponse = parsableJsonResponse.replace(/\{[^}]+\}/g, '');
+        // console.log(filteredResponse);
+      
+           // Check if the response is empty
+      if (!parsableJsonResponse) {
+        console.log("Empty response received.");
+        return;
+      }
+      
+      try {
+        const parsedResponse = JSON.parse(parsableJsonResponse);
+        console.log(parsedResponse.Q);
+        console.log(parsedResponse.A);
+        setMedium(parsedResponse);
+        // inputReq='';
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+        
+        
+      
+        
+      }
+      const HandleClick = (Medium) => {
+        speechSynthesis.cancel();
+        // setText(Medium);
+        speak({
+          text: Medium.A,
+          default: true,
+          lang: 'en-AU',
+          localService: true,
+          name: "Karen",
+          URI:"Karen"
+        });
+        console.log("Handleclick");
+        // const voices = speechSynthesis.getVoices();
+      };
+      
+      useEffect(() => {
+        const timeoutId = setTimeout(() => {
+          RunPrompt(transcript);
+        }, 2000);
+      
+        return () => clearTimeout(timeoutId);
+      }, [transcript]);
+      
+      useEffect(() => {
+        const timeoutId = setTimeout(() => {
+          HandleClick(Medium);
+        }, 2000);
+      
+        return () => clearTimeout(timeoutId);
+      }, [Medium]);
+      
+      useEffect(() => {
+        const handleBeforeUnload = () => {
+          speechSynthesis.cancel(); // Stop any ongoing speech synthesis
+        };
+      
+        window.addEventListener('beforeunload', handleBeforeUnload);
+      
+        return () => {
+          window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+      }, []);
+      
+        return (
+         <div>
+      
+       <div>
+       
+       {/* <p>Microphone: {LetsSee}</p> */}
+       {/* <p>Microphone: {listening ? 'on' : 'off'}</p> */}
+       <p>Microphone: {OnOff}</p>
+      
+            <button onClick={startRecognition}>Start</button>
+            <button onClick={stopRecognition}>Stop</button>
+            <div>Reset resets your speech. For setting an example, the code shows a response flow</div>
+            <button onClick={resetTranscript}>Reset</button>
+      
+            <p>{transcript}</p>
+        <button onClick={()=>{RunPrompt(`${transcript}`)}}>button</button>
+      
+              </div>
+      
+      <div className="fuck">
+        {Medium && (
+              <div>
+                <div>Question: {Medium.Q}</div>
+                <div>Answer: {Medium.A}</div>
+                <button className="buttonStyle" onClick={()=>{HandleClick(Medium)}}>Button</button>
+      
+              </div>
+              
+            )}
+            {/* {transcript && (<div>{transcript}</div>)} */}
+            
+       </div>
+      </div>
+        )   
+        
+        
+      }
+      
+      export default App;
+      
+      resetTranscript,
+      browserSupportsSpeechRecognition
+    } = useSpeechRecognition();
+
+const RunPrompt = async (InputReq) => {
+        const config = new Configuration({
+          apiKey: "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",
+        });
+        const openai = new OpenAIApi(config);
+    const prompt = `${InputReq} ? Return response in the following JSON format:
+    {
+      "Q": "question",
+      "A": "answer"
+    }`;
+    
+  
+        const response = await openai.createCompletion({
+          model: "text-davinci-003",
+          prompt: prompt,
+          max_tokens: 2048,
+          temperature: 1,
+        });
+    
+         const parsableJsonResponse=response.data.choices[0].text;
+           // Check if the response is empty
+      if (!parsableJsonResponse) {
+        console.log("Empty response received.");
+        return;
+      }
+    
+      try {
+        const parsedResponse = JSON.parse(parsableJsonResponse);
+        console.log(parsedResponse.Q);
+        console.log(parsedResponse.A);
+        setMedium(parsedResponse);
+        // inputReq='';
+      } catch (error) {
+        console.error("Error parsing JSON:", error);
+      }
+        
+        
+    
+        
+      }
+
+      const HandleClick = (Medium) => {
+            // setText(Medium);
+            speak({
+              text: Medium,
+              default: true,
+              lang: 'en-AU',
+              localService: true,
+              name: "Karen",
+              URI:"Karen"
+            });
+            console.log("kaisa hai behenchod");
+            // const voices = speechSynthesis.getVoices();
+           
+          
+          };
+
+  return (
+   <div>
+
+ <div>
+          <p>Microphone: {listening ? 'on' : 'off'}</p>
+          <button onClick={SpeechRecognition.startListening}>Start</button>
+          <button onClick={SpeechRecognition.stopListening}>Stop</button>
+          <button onClick={resetTranscript}>Reset</button>
+          <p>{transcript}</p>
+  <button onClick={()=>{RunPrompt(`${transcript}`)}}>button</button>
+
+        </div>
+
+<div className="fuck">
+  {Medium && (
+        <div>
+          <div>Question: {Medium.Q}</div>
+          <div>Answer: {Medium.A}</div>
+          <button className="buttonStyle" onClick={()=>{HandleClick(Medium.A)}}>Button</button>
+
+        </div>
+        
+      )}
+      {/* {transcript && (<div>{transcript}</div>)} */}
+      
+ </div>
+</div>
+  )   
+  
+  
+}
+
+export default App;
+
+  // const {speak}=useSpeechSynthesis();
+  // const handleClick=(Medium)=>{
+  //   setText(Medium);
+  //   speak({text:text,
+  //     default: false,
+  //     lang: "en-AU",
+  //     localService: true,
+  //     name: "Google UK English Female",
+  //     voiceURI: "Google UK English Female"})
+  // }
+
+
+   // to choose voice
+  // const voices = speechSynthesis.getVoices();
+
+  // // Filter voices based on language 'en' (English)
+  // const englishVoices = voices.filter((voice) => voice.lang.startsWith('en'));
+  
+  // // Display the list of English voices
+  // englishVoices.forEach((voice) => {
+  //   console.log('Name:', voice.name);
+  //   console.log('Language:', voice.lang);
+  //   console.log('URI:', voice.voiceURI);
+  //   console.log('Default voice:', voice.default);
+  //   console.log('-------------------');
+  // });
+  
+
