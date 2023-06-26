@@ -110,6 +110,7 @@ h1{
   .NewResp{
     height: 30vh;
     overflow-y: scroll;
+    
 margin-bottom: 10px;
     overflow-x: hidden;
     font-weight: 500;
