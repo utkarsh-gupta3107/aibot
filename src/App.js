@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+// import './env';
 import { Configuration, OpenAIApi } from "openai";
 import { useSpeechSynthesis } from "react-speech-kit";
 import SpeechRecognition, {
@@ -10,7 +11,7 @@ function App() {
   const [Medium, setMedium] = useState("");
   const [OnOff, setOnOff] = useState("");
   const { speak } = useSpeechSynthesis();
-  const [listening, setListening] = useState(false);
+  const [Listening, setListening] = useState(false);
   const [Output, setOutput] = useState([]);
 
   const {
@@ -31,11 +32,11 @@ function App() {
     }
   };
 
-  const stopRecognition = () => {
-    SpeechRecognition.stopListening();
-    setListening(false);
-    setOnOff("off");
-  };
+  // const stopRecognition = () => {
+  //   SpeechRecognition.stopListening();
+  //   setListening(false);
+  //   setOnOff("off");
+  // };
 
   const resetTranscript = () => {
     setOnOff("Off");
@@ -48,7 +49,7 @@ function App() {
     speechSynthesis.cancel();
 
     const config = new Configuration({
-      apiKey: "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",
+      apiKey: process.env.REACT_APP_KEY
     });
     const openai = new OpenAIApi(config);
     const prompt = `${InputReq} ? Return response in the following JSON format:
