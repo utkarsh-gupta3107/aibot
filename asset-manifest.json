@@ -1,15 +1,8 @@
 {
-  "files": {
-    "main.css": "/aibot/static/css/main.d6d5371c.css",
-    "main.js": "/aibot/static/js/main.69fe9a75.js",
-    "static/js/787.13bac250.chunk.js": "/aibot/static/js/787.13bac250.chunk.js",
-    "index.html": "/aibot/index.html",
-    "main.d6d5371c.css.map": "/aibot/static/css/main.d6d5371c.css.map",
-    "main.69fe9a75.js.map": "/aibot/static/js/main.69fe9a75.js.map",
-    "787.13bac250.chunk.js.map": "/aibot/static/js/787.13bac250.chunk.js.map"
-  },
-  "entrypoints": [
-    "static/css/main.d6d5371c.css",
-    "static/js/main.69fe9a75.js"
-  ]
+  "main.css": "static/css/main.be8ebf84.css",
+  "main.css.map": "static/css/main.be8ebf84.css.map",
+  "main.js": "static/js/main.a42eacaf.js",
+  "main.js.map": "static/js/main.a42eacaf.js.map",
+  "static/js/0.29e2a16c.chunk.js": "static/js/0.29e2a16c.chunk.js",
+  "static/js/0.29e2a16c.chunk.js.map": "static/js/0.29e2a16c.chunk.js.map"
 }
