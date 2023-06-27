@@ -51,6 +51,7 @@ function App() {
     const config = new Configuration({
       apiKey: process.env.REACT_APP_KEY
     });
+
     const openai = new OpenAIApi(config);
     const prompt = `${InputReq} ? Return response in the following JSON format:
 {
